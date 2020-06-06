@@ -40,12 +40,12 @@ var getRandomColor = function (ctx, arr, i) {
   if (arr[i] === 'Вы') {
     color = 'rgba(255, 0, 0, 1)';
   }
-  return ctx.fillStyle = color;
+  ctx.fillStyle = color;
 };
 
 var renderText = function (ctx, color, arr, i) {
   ctx.fillStyle = color;
-  if (typeof(arr[i]) === 'number') {
+  if (typeof (arr[i]) === 'number') {
     ctx.fillText(Math.round(arr[i]), getTextX(i), textY - FONT_GAP - GAP - getRectHeight(arr, i));
   } else {
     ctx.fillText(arr[i], getTextX(i), textY);
