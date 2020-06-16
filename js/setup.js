@@ -35,49 +35,56 @@ var EYES_COLORS = [
   'yellow',
   'green'
 ];
-var OBJECT_NAMES = [
-  'name',
-  'coatColor',
-  'eyesColor'
-];
+var WIZARD_FIELDS = {
+  NAME: 'name',
+  COAT_COLOR: 'coatColor',
+  EYES_COLOR: 'eyesColor'
+};
 
 var wizards = [];
-var object = {};
 
-var getRandomElement = function (arr, max) {
-  var randomElement = Math.floor(Math.random() * max);
-  return arr[randomElement];
+var getRandomArray = function (arr) {
+  var randomArray = [];
+  for (var i = arr.length; i > 0; i--) {
+    do {
+      var index = Math.floor(Math.random() * arr.length);
+    }
+    while (randomArray.indexOf(arr[index]) !== -1);
+    randomArray.push(arr[index]);
+  }
+  return randomArray;
 };
 
-var addPlayersFirstName = function (arr, playersNames, objectName) {
-  object = {};
-  var wizardFirstName = getRandomElement(arr, arr.length);
-  object[objectName] = wizardFirstName;
-  playersNames.push(object);
-  arr.splice(arr.indexOf(wizardFirstName), 1);
+var addWizardFirstName = function (arr, wizardsFields, length) {
+  var randomFirstNames = getRandomArray(arr);
+  for (var i = 0; i < length; i++) {
+    wizardsFields.push({
+      name: randomFirstNames[i]
+    });
+  }
+  return wizardsFields;
 };
 
-var addPlayersSecondName = function (arr, playersNames, objectName) {
-  var wizardSecondName = getRandomElement(arr, arr.length);
-  playersNames[i][objectName] += ' ' + wizardSecondName;
-  arr.splice(arr.indexOf(wizardSecondName), 1);
+var addWizardSecondName = function (arr, wizardsFields, wizardField) {
+  var randomSecondNames = getRandomArray(arr);
+  for (var i = 0; i < wizardsFields.length; i++) {
+    wizardsFields[i][wizardField] += ' ' + randomSecondNames[i];
+  }
+  return wizardsFields;
 };
 
-var addWizardColors = function (arr, playersNames, objectName) {
-  var color = getRandomElement(arr, arr.length);
-  playersNames[i][objectName] = color;
-  arr.splice(arr.indexOf(color), 1);
+var addWizardColors = function (arr, wizardsFields, wizardField) {
+  var randomColors = getRandomArray(arr);
+  for (var i = 0; i < wizardsFields.length; i++) {
+    wizardsFields[i][wizardField] = randomColors[i];
+  }
+  return wizardsFields;
 };
 
-for (var i = 3; i >= 0; i--) {
-  addPlayersFirstName(WIZARD_FIRSTNAMES, wizards, OBJECT_NAMES[0]);
-}
-
-for (var j = 3; j >= 0; j--) {
-  addPlayersSecondName(WIZARD_SECONDNAMES, wizards, OBJECT_NAMES[0]);
-  addWizardColors(COAT_COLORS, wizards, OBJECT_NAMES[1]);
-  addWizardColors(EYES_COLORS, wizards, OBJECT_NAMES[2]);
-}
+addWizardFirstName(WIZARD_FIRSTNAMES, wizards, 4);
+addWizardSecondName(WIZARD_SECONDNAMES, wizards, WIZARD_FIELDS.NAME);
+addWizardColors(COAT_COLORS, wizards, WIZARD_FIELDS.COAT_COLOR);
+addWizardColors(EYES_COLORS, wizards, WIZARD_FIELDS.EYES_COLOR);
 
 var userDialog = document.querySelector('.setup');
 userDialog.classList.remove('hidden');
@@ -99,7 +106,7 @@ var renderWizard = function (wizard) {
 
 var fragment = document.createDocumentFragment();
 for (var g = 0; g < wizards.length; g++) {
-  fragment.appendChild(renderWizard(wizards[i]));
+  fragment.appendChild(renderWizard(wizards[g]));
 }
 similarListElement.appendChild(fragment);
 
